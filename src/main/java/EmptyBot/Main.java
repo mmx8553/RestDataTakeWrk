@@ -54,12 +54,13 @@ public class Main {
         //requestConfig = new RequestConfig(1,new Proxy("HTTP","s-tmg:8080"));
         //defaultBotOptions.setRequestConfig();
 
-        TelegramLongPollingBot myBot = new IPBot(defaultBotOptions);
+//        TelegramLongPollingBot myBot = new IPBot(defaultBotOptions);
+        TelegramLongPollingBot myBot = new IPBot();
 
 //        myBot.getOptions().setProxyHost("http://myproxy.com");
 //        myBot.getOptions().setProxyPort(8080);
 
-        System.out.println(myBot.getOptions().getRequestConfig().getProxy());//  setProxyHost("http://myproxy.com");
+//        System.out.println(myBot.getOptions().getRequestConfig().getProxy());//  setProxyHost("http://myproxy.com");
 
         try{
             telegramBotsApi.registerBot(myBot);

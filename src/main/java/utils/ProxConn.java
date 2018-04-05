@@ -23,7 +23,11 @@ public class ProxConn {
         Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("s-tmg", 8080));
 
         URL url = new URL("http://myip.dnsdynamic.org/");
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection(proxy);
+        //with proxy
+//        HttpURLConnection connection = (HttpURLConnection) url.openConnection(proxy);
+
+        //no proxy
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
         connection.setDoInput(true);
         connection.setDoOutput(true);
@@ -35,7 +39,7 @@ public class ProxConn {
         //System.out.println(connection.getResponseCode());
 
         if (connection.getResponseCode() != 200) {
-            throw new ServerStatusException();
+            throw new ServerStatusException(connection.getResponseMessage());
         }
 
 

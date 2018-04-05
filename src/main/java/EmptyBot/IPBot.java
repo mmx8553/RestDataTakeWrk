@@ -2,7 +2,6 @@ package EmptyBot;
 
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Update;
-import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 
@@ -14,8 +13,8 @@ public class IPBot extends TelegramLongPollingBot {
     private final String YES = "YES";
     private final String NO = "NO";
 
-    IPBot(DefaultBotOptions defaultBotOptions){
-        super(defaultBotOptions);
+    IPBot(/*DefaultBotOptions defaultBotOptions*/){
+    //    super(defaultBotOptions);
     }
 
     @Override

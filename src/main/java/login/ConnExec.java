@@ -70,10 +70,10 @@ public class ConnExec {
 
             URL url = new URL(requestAddres);
 //with proxy
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection(proxy);
+//            HttpURLConnection connection = (HttpURLConnection) url.openConnection(proxy);
 
 //no proxy
-//            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
             connection.setDoInput(true);
             connection.setDoOutput(true);
@@ -98,7 +98,8 @@ public class ConnExec {
             //System.out.println(connection.getResponseCode());
 
             if (connection.getResponseCode() != 200) {
-                throw new ServerStatusException();
+                System.out.println(connection.getResponseMessage());
+                throw new ServerStatusException(connection.getResponseMessage());
             }
 
             String line;
@@ -122,5 +123,12 @@ public class ConnExec {
 
         return jsonString.toString();
 
+
+
+    }
+
+    public String getUpdates(){
+
+        return "";
     }
 }

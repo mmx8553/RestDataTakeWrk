@@ -1,5 +1,6 @@
 package login;
 
+import org.apache.http.ParseException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -25,7 +26,7 @@ public class MainClass {
 
 
     public static void main(String[] args) {
-
+        getUpList();
     }
 
 
@@ -50,15 +51,14 @@ public class MainClass {
             Iterator iterator = JsnArr.iterator();
             String itemName;
             while (iterator.hasNext()) {
-                //System.out.println(iterator.next().toString());
-                //System.out.println(new JSONObject(iterator.next().toString()).get("name"));
                 itemName = (String) new JSONObject(iterator.next().toString()).get("name");
+                System.out.println(itemName);
                 ast.add(itemName);
             }
 
-//         } catch (ParseException e) {
-//            System.out.println("parse Exc = " + e.getMessage());
-//            //e.printStackTrace();
+         } catch (ParseException e) {
+            System.out.println("parse Exc = " + e.getMessage());
+            //e.printStackTrace();
         }
         catch (Exception e){
             System.out.println("Exc = " + e.getMessage());

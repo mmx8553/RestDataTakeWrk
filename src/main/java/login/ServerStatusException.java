@@ -5,7 +5,8 @@ package login;
  */
 public class ServerStatusException extends Exception {
 
-    public ServerStatusException(){
+    public ServerStatusException(String message){
         super();
     }
 }
+

@@ -27,7 +27,7 @@ public class KmzBot extends TelegramLongPollingBot {
 //    }
 
     public KmzBot(DefaultBotOptions options) {
-        super(options);
+        //super(options);
     }
 
     private KmzData kmzData; // = new KmzData();
