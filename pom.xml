@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>ITIS</groupId>
+    <artifactId>RestDataTake</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+
+        <!--&lt;!&ndash; https://mvnrepository.com/artifact/javax.ws.rs/javax.ws.rs-api &ndash;&gt;-->
+        <!--<dependency>-->
+            <!--<groupId>javax.ws.rs</groupId>-->
+            <!--<artifactId>javax.ws.rs-api</artifactId>-->
+            <!--<version>2.0</version>-->
+            <!--<scope>system</scope>-->
+            <!--<systemPath>${project.basedir}/src/main/resources/javax.ws.rs-api-2.0.jar</systemPath>-->
+        <!--</dependency>-->
+        <!--&lt;!&ndash; https://mvnrepository.com/artifact/com.sun.jersey/jersey-bundle &ndash;&gt;-->
+
+        <!--<dependency>-->
+            <!--<groupId>com.sun.jersey</groupId>-->
+            <!--<artifactId>jersey-bundle</artifactId>-->
+            <!--<version>1.19.4</version>-->
+            <!--<scope>system</scope>-->
+            <!--<systemPath>${project.basedir}/src/main/resources/jersey-bundle-1.19.4.jar</systemPath>-->
+        <!--</dependency>-->
+
+
+        <!--&lt;!&ndash; https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient &ndash;&gt;-->
+        <!--<dependency>-->
+            <!--<groupId>org.apache.httpcomponents</groupId>-->
+            <!--<artifactId>httpclient</artifactId>-->
+            <!--<version>4.3.6</version>-->
+            <!--<scope>system</scope>-->
+            <!--<systemPath>${project.basedir}/src/main/resources/httpclient-4.3.6.jar</systemPath>-->
+        <!--</dependency>-->
+
+        <!--<dependency>-->
+            <!--<groupId>org.apache.cxf</groupId>-->
+            <!--<artifactId>cxf-rt-rs-client</artifactId>-->
+            <!--<version>3.2.0</version>-->
+        <!--</dependency>-->
+
+        <!--<dependency>-->
+            <!--<groupId>org.apache.cxf</groupId>-->
+            <!--<artifactId>cxf-rt-transports-http-hc</artifactId>-->
+            <!--&lt;!&ndash; 2.7.8 or 3.0.15 &ndash;&gt;-->
+            <!--&lt;!&ndash;<version>${cxf.version}</version>&ndash;&gt;-->
+            <!--<version>3.2.0</version>-->
+        <!--</dependency>-->
+
+        <!-- https://mvnrepository.com/artifact/org.apache.cxf/cxf-bundle -->
+        <!--<dependency>-->
+            <!--<groupId>org.apache.cxf</groupId>-->
+            <!--<artifactId>cxf-bundle</artifactId>-->
+            <!--<version>3.0.0-milestone2</version>-->
+        <!--</dependency>-->
+        <!--&lt;!&ndash; https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient &ndash;&gt;-->
+        <!--<dependency>-->
+            <!--<groupId>org.apache.httpcomponents</groupId>-->
+            <!--<artifactId>httpclient</artifactId>-->
+            <!--<version>4.5.5</version>-->
+        <!--</dependency>-->
+
+        <!-- https://mvnrepository.com/artifact/javax.websocket/javax.websocket-api -->
+        <!-- https://mvnrepository.com/artifact/org.json/json -->
+        <!--<dependency>-->
+            <!--<groupId>org.json</groupId>-->
+            <!--<artifactId>json</artifactId>-->
+            <!--<version>20180130</version>-->
+        <!--</dependency>-->
+
+
+        <!--<dependency>-->
+            <!--<groupId>com.googlecode.json-simple</groupId>-->
+            <!--<artifactId>json-simple</artifactId>-->
+            <!--<version>1.1.1</version>-->
+        <!--</dependency>-->
+
+
+    </dependencies>
+
+
+</project>
