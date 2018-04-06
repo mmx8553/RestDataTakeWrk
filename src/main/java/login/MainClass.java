@@ -9,6 +9,7 @@ import java.util.Iterator;
 
 /**
  * connect to RighTech - and get list of 1st level  objects
+ * connection via HTTPUrlConnection
  */
 
 
@@ -22,7 +23,7 @@ public class MainClass {
     public  static String payload = "{\"login\":\"kamaz-maxim\",\"password\":\"nEWkj3_hG5\"}";
     public  static String baseaddr = "https://sandbox.rightech.io/api/v1";
     public  static String requestUrl = "/auth/token";
-//        String requestUrl="http://search.twitter.com/search.json?q=apple";
+//        String    requestUrl="http://search.twitter.com/search.json?q=apple";
 
 
     public static void main(String[] args) {

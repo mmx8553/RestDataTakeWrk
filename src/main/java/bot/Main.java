@@ -34,7 +34,8 @@ public class Main {
 
 
 
-            telegramBotsApi.registerBot(new KmzBot(instance));//new KmzData(new ConnExec())));
+//            telegramBotsApi.registerBot(new KmzBot(instance));//new KmzData(new ConnExec())));
+            telegramBotsApi.registerBot(new KmzBot());
         }
         catch (TelegramApiException e){
             e.printStackTrace();

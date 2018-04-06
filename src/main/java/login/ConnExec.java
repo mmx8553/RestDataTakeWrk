@@ -16,8 +16,11 @@ import java.net.URL;
  * Created by OsipovMS on 21.03.2018.
  */
 public class ConnExec {
+
+    public static final boolean useProxy = false ; //true;
+
     public ConnExec() {
-        System.out.println(tokenRequestNStore());
+//        System.out.println("ConnExec constructor, token = " + tokenRequestNStore());
     }
 
     public String getToken() {
@@ -30,9 +33,12 @@ public class ConnExec {
 
     private String token;
 
-    String payload = "{\"login\":\"kamaz-maxim\",\"password\":\"nEWkj3_hG5\"}";
-    String baseaddr = "https://sandbox.rightech.io/api/v1";
-    String requestUrl = "/auth/token";
+    public String payload = "{\"login\":\"kamaz-maxim\",\"password\":\"nEWkj3_hG5\"}";
+    public String jsonLoginPassword = "{\"login\":\"kamaz-maxim\",\"password\":\"nEWkj3_hG5\"}";
+    public String baseaddr = "https://sandbox.rightech.io/api/v1";
+    public String requestTokenUrl = "/auth/token";
+    public String requestObjects = "/objects";
+
 
 
     public String tokenRequestNStore(){
@@ -41,7 +47,7 @@ public class ConnExec {
         String tmpToken = "";
 
         try{
-            tmpStr =  ConnExec.sendRequest("POST",baseaddr, requestUrl, payload, null).toString();
+            tmpStr =  ConnExec.sendRequest("POST",baseaddr, requestTokenUrl, payload, null).toString();
             tmpToken = new JSONObject(tmpStr).get("token").toString();
         }
         catch (Exception e){
@@ -69,11 +75,18 @@ public class ConnExec {
 //            HttpURLConnection connection = (HttpURLConnection) url.openConnection(proxy);
 
             URL url = new URL(requestAddres);
-//with proxy
-//            HttpURLConnection connection = (HttpURLConnection) url.openConnection(proxy);
 
-//no proxy
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            HttpURLConnection connection;
+
+/**
+ * Proxy - use or not
+ */
+            if (useProxy) {
+                connection = (HttpURLConnection) url.openConnection(proxy);
+            }else {
+                connection = (HttpURLConnection) url.openConnection();
+            }
+
 
             connection.setDoInput(true);
             connection.setDoOutput(true);

@@ -30,9 +30,12 @@ private final String[][] model = {{"Dumper","Dumper","Dumper","Chassis","Truck",
 //    {"sam_65115","sam_6520", "sam_65201", "shassi_4308", "gr_65117", "gr_65207", "gr_6560", "gr_65806",
 //            "t_5490", "t_6460", "t_65206"}};
 
-    public KmzData (ConnExec connExec){
-        this.connExec = connExec;
+    public KmzData (){
+
     }
+//    public KmzData (ConnExec connExec){
+//        this.connExec = connExec;
+//    }
 
     public String[] getTypes() {
         return types;

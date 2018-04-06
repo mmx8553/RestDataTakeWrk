@@ -47,9 +47,6 @@ public class WriteBotString {
         payload = null;
         String requestUrl;
 
-//        System.out.println("payload = " + payload);
-//        System.out.println("url = " + requestUrl);
-//        System.out.println(sendPostRequest(requestUrl, payload));
 
         for(String st:login.MainClass.getUpList()){
             requestUrl = msgSend(chatIdDef,st);

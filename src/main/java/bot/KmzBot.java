@@ -5,7 +5,6 @@ import org.telegram.telegrambots.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.api.objects.replykeyboard.buttons.InlineKeyboardButton;
-import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 
@@ -26,11 +25,11 @@ public class KmzBot extends TelegramLongPollingBot {
 //        this.kmzData = kmzData;
 //    }
 
-    public KmzBot(DefaultBotOptions options) {
+    public KmzBot(/*DefaultBotOptions options*/) {
         //super(options);
     }
 
-    private KmzData kmzData; // = new KmzData();
+    private KmzData kmzData = new KmzData();
 //    private final String YES = "ДА";
 //    private final String NO = "НЕТ";
     private final String YES = "YES";
@@ -224,8 +223,6 @@ public class KmzBot extends TelegramLongPollingBot {
              */
             else if(messageText.equals("*")||messageText.equals("/start")){
 
-//                StringBuilder sb = new StringBuilder().append("Подбор КАМАЗа").append("\n");
-//                sb.append("Выбирайте тип: ");
                 StringBuilder sb = new StringBuilder().append("Selection of KAMAZ").append("\n");
                 sb.append("Type ?  : ");
 
