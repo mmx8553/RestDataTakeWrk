@@ -27,18 +27,25 @@ public class IPBot extends TelegramLongPollingBot {
 
 
 
-    private List<List<InlineKeyboardButton>> getButtonList(String[] arrayNames) {
+    private <T> List<List<InlineKeyboardButton>> getButtonList(T /*String[]*/ arrayNames) {
+
 
         List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
         List<InlineKeyboardButton> rowInline; // = new ArrayList<>();
 
-        for (String str : arrayNames) {
-            rowInline = new ArrayList<>();
-            rowInline.add(new InlineKeyboardButton().setText(str).setCallbackData(str));
-            System.out.println("row = " + rowInline.get(0).toString());
-
-            rowsInline.add(rowInline);
+        try{
+            if (arrayNames instanceof String[]) {
+                for (String str : (String[]) arrayNames) {
+                    rowInline = new ArrayList<>();
+                    rowInline.add(new InlineKeyboardButton().setText(str).setCallbackData(str));
+                    System.out.println("row = " + rowInline.get(0).toString());
+                    rowsInline.add(rowInline);
+                }
+            }
+        }catch (ClassCastException cce){
+            System.err.println(cce.getMessage());
         }
+
 
         System.out.println("btn forming = ok");
 
@@ -47,11 +54,12 @@ public class IPBot extends TelegramLongPollingBot {
 
 
 
-    private void buttonToSelectPrint(Long chatId, String msg, String[] captions) {
+    private <T> void  buttonToSelectPrint  (Long chatId, String msg, /*String[]*/ T captions) {
         SendMessage message = new SendMessage().setChatId(chatId).setText(msg);
         InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
         //отрисовать кнопки
         markupInline.setKeyboard(getButtonList(captions));
+
         message.setReplyMarkup(markupInline);
 
         try {
@@ -67,6 +75,8 @@ public class IPBot extends TelegramLongPollingBot {
         System.out.println("update recieved");
 
         if (update.hasCallbackQuery()){
+
+            processCallbackQuery(update);
 
             //String answerText = "";
             long chat_id = update.getCallbackQuery().getMessage().getChatId();
@@ -111,34 +121,43 @@ public class IPBot extends TelegramLongPollingBot {
         }
 
         if (update.hasMessage() && update.getMessage().hasText()) {
+
             // Set variables
 
-            System.out.println("update message happens");
-            String messageText = update.getMessage().getText();
-            long chat_id = update.getMessage().getChatId();
+            processTextUpdate(update);
 
-            String answerText;
-            System.err.println(messageText.toString());
-            if (messageText.equals("?")){
-
-            }
-
-            /**
-             * начать подбор - сначала тип
-             */
-            else if(messageText.equals("*")||messageText.equals("/start")){
-
-                StringBuilder sb = new StringBuilder().append(" KAMAZ - blah blah blah").append("\n");
-                this.printMessage(chat_id,sb.toString());
-
-                String[] st  = webbReq.getButtonListToPrint();
-
-                this.buttonToSelectPrint(chat_id,"aaa", st);
-
-            } else {
-                this.printMessage(chat_id,"OK");
                            }
         }
+
+
+
+    public void processTextUpdate (Update update){
+        System.out.println("update message happens");
+        String messageText = update.getMessage().getText();
+        long chat_id = update.getMessage().getChatId();
+
+//        String answerText;
+
+        System.err.println(messageText.toString());
+
+        if (messageText.equals("?")){
+
+        }
+        else if(messageText.equals("*")||messageText.equals("/start")){
+
+            StringBuilder sb = new StringBuilder().append(" KAMAZ - blah blah blah").append("\n");
+            this.printMessage(chat_id,sb.toString());
+            String[] st  = webbReq.getButtonListToPrint();
+            this.buttonToSelectPrint(chat_id,"aaa", st);
+        } else {
+                this.printMessage(chat_id,"OK");
+
+        }
+    }
+
+
+    public void processCallbackQuery(Update update){
+
     }
 
 

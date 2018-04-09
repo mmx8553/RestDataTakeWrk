@@ -4,6 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import webbPkg.Webb;
 
+import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -20,7 +21,10 @@ public class WebbReq {
 
     public WebbReq(){
         this.token = null;
-        this.proxy = null; //new Proxy(Proxy.Type.HTTP, new InetSocketAddress("s-tmg", 8080));
+//        this.proxy = null;
+        this.proxy =  new Proxy(Proxy.Type.HTTP, new InetSocketAddress("s-tmg", 8080));
+
+        proxy = null;
         this.webb = Webb.create();
         webb.setProxy(this.proxy);
     }
