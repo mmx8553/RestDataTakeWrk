@@ -1,5 +1,6 @@
 package utils;
 
+import login.WebbReq;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -27,7 +28,9 @@ public class JsoupTest {
 //                .timeout(5000).get();
 //
 
-        Document doc = Jsoup.connect(url).get();
+        WebbReq wr = new WebbReq(true);
+        String st = wr.getWebb().get(url).asString().getBody();
+        Document doc = Jsoup.parse(st);
         Elements links = doc.select("a[href]");
         Elements media = doc.select("[src]");
         Elements imports = doc.select("link[href]");

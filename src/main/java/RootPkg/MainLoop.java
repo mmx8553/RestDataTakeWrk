@@ -1,5 +1,6 @@
 package RootPkg;
 
+import login.WebbReq;
 import org.json.JSONObject;
 import webbPkg.Webb;
 
@@ -39,7 +40,9 @@ public class MainLoop {
 //
 //
 
-        Webb webb = Webb.create();
+        //mmx proxy
+        WebbReq wr = new WebbReq(false);
+        Webb webb = wr.getWebb();
 
     try {
 
@@ -86,8 +89,47 @@ public class MainLoop {
 
         String st = "";
 
+//
+//        String strMarkup = "{\"inline_keyboard\":[[{\"text\":\"A\",\"callback_data\":\"A1\"},"+
+//        "{\"text\":\"B\",\"callback_data\":\"C1\"}]]}";
+//
+//        String strPostData = "{\"chat_id\": \" chat_id=492857790\", ""text"": """ & _
+//        strMessage & """, ""reply_markup"": " & strMarkup & "}"
 
 
+        result = webb
+                .post("https://api.telegram.org/bot523022396:AAFryNlfFVL5WOTAD35BM4bBL832zis_ERE/sendMessage?chat_id=587359670&text=a123a")
+//                .param("origin", new GeoPoint(47.8227, 12.096933))
+//                .param("destination", new GeoPoint(47.8633, 12.215533))
+
+//                .param("data","{" +
+//                        "        \"parse_mode\": \"Markdown\",\n" +
+//                        "        \"reply_markup\": {\n" +
+//                        "            \"one_time_keyboard\": true,\n" +
+//                        "            \"keyboard\": [[{\n" +
+//                        "                text: \"My phone number\",\n" +
+//                        "                request_contact: true\n" +
+//                        "            }], [\"Cancel\"]]\n" +
+//                        "        }\n" +
+//                        "    }")
+
+                .body(new JSONObject("{ \"reply_markup\": {\n" +
+                        " \"keyboard\": [[\n" +
+                        "                {\n" +
+                        "                    \"text\": \" gIVE MY CONTACTs \"" +
+//                        ",\n" + "                    \"request_contact\": true  \n" +
+                        "                }],[ \n" +
+                        "                {\n" +
+                        "                    \"text\": \"B\",\n" +
+                        "                    \"callback_data\": \"C1\"            \n" +
+                        "                }]   ], \"one_time_keyboard\":true   }\n" +
+                        "}\n"))
+                .ensureSuccess()
+                .asJsonObject()
+                .getBody();
+
+        //JSONArray routes = result.getJSONArray("routes");
+        System.err.println(result);
 
 
 
