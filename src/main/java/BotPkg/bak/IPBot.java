@@ -42,7 +42,7 @@ public class IPBot extends TelegramLongPollingBot {
 
     private  List<List<InlineKeyboardButton>> getButtonList(Map<String,String> arrayNames) {
 
-        List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
+        List<List<InlineKeyboardButton>> rowsInline = new ArrayList<List<InlineKeyboardButton>>();
         List<InlineKeyboardButton> rowInline; // = new ArrayList<>();
 
         try{

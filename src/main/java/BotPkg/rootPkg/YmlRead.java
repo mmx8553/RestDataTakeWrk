@@ -27,7 +27,7 @@ public class YmlRead {
 
         Yaml yaml = new Yaml();
         Map<String, Map<String, String>> values;
-        Map<String,String> result = new HashMap<>();
+        Map<String,String> result = new HashMap<String, String>();
         try {
             yaml.dump(yaml.load(new FileInputStream(new File(fileName))));
             values = (Map<String, Map<String, String>>) yaml

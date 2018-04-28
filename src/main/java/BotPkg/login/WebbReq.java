@@ -53,10 +53,10 @@ public class WebbReq {
     public boolean createToken(WebbReq webbReq ){
         RtData ce = new RtData();
         JSONObject result;
-        String tokenUrl = ce.baseaddr+ce.requestTokenUrl;
-        String JSONUsrPwd = ce.jsonLoginPassword;
+        String tokenUrl = ce.getRtBaseaddr()+ce.requestTokenUrl;
+        String JSONUsrPwd = ce.getJsonLoginPassword();
         try {
-            result = webbReq.getWebb().post(tokenUrl /*ce.baseaddr+ce.requestTokenUrl*/)
+            result = webbReq.getWebb().post(tokenUrl /*ce.rtBaseaddr+ce.requestTokenUrl*/)
                     .body(new JSONObject(JSONUsrPwd /*ce.payload*/))
                     .retry(1, false) // at most one retry, don't do exponential backoff
                     .asJsonObject()
@@ -84,7 +84,7 @@ public class WebbReq {
         RtData ce = new RtData();
         JSONObject result = null;
         //String  result = null;
-        String url = ce.baseaddr+ce.requestObjects+"/"+id;
+        String url = ce.getRtBaseaddr()+ce.requestObjects+"/"+id;
         try {
                 result = webbReq.getWebb().get(url)
                         .header("Authorization",new StringBuilder().append("Bearer ").append(webbReq.getToken()).toString())
@@ -117,8 +117,8 @@ public class WebbReq {
 ////            JSONObject result = null;
 //            JSONArray result = null;
 //            try {
-//                result = webbReq.getWebb().get(ce.baseaddr+ce.requestObjects)
-//                        .header("Authorization",new StringBuilder().append("Bearer ").append(webbReq.getToken()))
+//                result = webbReq.getWebb().get(ce.rtBaseaddr+ce.requestObjects)
+//                        .header("Authorization",new StringBuilder().append("Bearer ").append(webbReq.getRtToken()))
 //                        .retry(1, false) // at most one retry, don't do exponential backoff
 //                        .asJsonArray()
 ////                        .asJsonObject()
@@ -158,7 +158,7 @@ public class WebbReq {
 //        RtData ce = new RtData();
 //        WebbReq webbReq = new WebbReq(false);
 //
-//        if (!webbReq.createToken(webbReq, ce.baseaddr + ce.requestTokenUrl, ce.jsonLoginPassword)) {
+//        if (!webbReq.createToken(webbReq, ce.rtBaseaddr + ce.requestTokenUrl, ce.jsonLoginPassword)) {
 //            System.out.println("main = token problem");
 //        }
 //
@@ -171,7 +171,7 @@ public class WebbReq {
 //
 //    }
 
-    public static void main(String[] args) {
+    public static void maino(String[] args) {
 
         RtData ce = new RtData();
         WebbReq webbReq = new WebbReq(false);

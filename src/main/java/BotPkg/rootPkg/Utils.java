@@ -25,9 +25,29 @@ public enum Utils {
     INSTANCE;
 //    private static Utils instance = new Utils();
 
+    @Getter
     private String baseaddrRt = "https://sandbox.rightech.io/api/v1";
+
+    @Getter
     private String requestTokenUrlRt = "/auth/token";
+
+    @Getter
     private String requestObjectsRt = "/objects";
+
+    @Getter
+    private ProxConn proxyConnection;
+
+
+
+    @Getter @Setter
+    private RtData rtData;
+
+    @Getter @Setter
+    private BotMessaging botMessaging;
+
+    @Getter @Setter
+    private String rtToken ;
+
 
     @Getter @Setter
     private boolean useProx = true;
@@ -48,7 +68,7 @@ public enum Utils {
 
 
 
-    private Map<String,String> loginDataMap= new HashMap<>();
+    private Map<String,String> loginDataMap= new HashMap<String, String>();
 
     private YmlRead yml = new YmlRead(null);
 
@@ -67,6 +87,10 @@ public enum Utils {
 
     private void init(){
         try {
+
+            this.rtData = new RtData();
+            this.botMessaging = new BotMessaging();
+            this.proxyConnection = new ProxConn();
             loginDataMap = yml.getValues();
 
             tokenTg = loginDataMap.get("bot.token");
@@ -74,7 +98,7 @@ public enum Utils {
             nameTg = loginDataMap.get("bot.botname");
 
             JSONObject joRT = new JSONObject()
-                    .put("BotPkg/login",loginDataMap.get("rt.botname"))
+                    .put("login",loginDataMap.get("rt.login"))
                     .put("password",loginDataMap.get("rt.password"));
             jsonRtLoginPassword = joRT.toString();
 
@@ -94,7 +118,7 @@ public enum Utils {
 
 
 //    private String token;
-//    public String getToken() {
+//    public String getRtToken() {
 //        return token;
 //    }
 
@@ -162,7 +186,7 @@ public enum Utils {
     }
 
 
-
+@Deprecated
     public Map<String,String> getBotRootObjectsMap(WebbReq webbReq, RtData ce){
 
 
@@ -173,7 +197,7 @@ public enum Utils {
 
         JSONArray result = null;
         try {
-            result = webbReq.getWebb().get(ce.baseaddr+ce.requestObjects)
+            result = webbReq.getWebb().get(ce.getRtBaseaddr()+ce.requestObjects)
                     .header("Authorization",new StringBuilder().append("Bearer ").append(webbReq.getToken()))
                     .retry(1, false) // at most one retry, don't do exponential backoff
                     .asJsonArray()
@@ -219,7 +243,7 @@ public enum Utils {
 
         JSONArray result = null;
         try {
-            result = webbReq.getWebb().get(ce.baseaddr+ce.requestObjects)
+            result = webbReq.getWebb().get(ce.getRtBaseaddr()+ce.requestObjects)
                     .header("Authorization",new StringBuilder().append("Bearer ").append(webbReq.getToken()))
                     .retry(1, false) // at most one retry, don't do exponential backoff
                     .asJsonArray()

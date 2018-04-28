@@ -14,49 +14,43 @@ import java.net.URL;
 public class WriteBotString {
 
 
-    //  513909183:AAGa0kj2rt6TDrYwWoKrc6PscyoI_m195Ko           // vprokk
-    //  523022396:AAFryNlfFVL5WOTAD35BM4bBL832zis_ERE           //kamazzi
-    public static String token = "523022396:AAFryNlfFVL5WOTAD35BM4bBL832zis_ERE";
-    public static String chatIdDef = "492857790";
 
-    public static String msgSend(String chatId, String msg) {
-
-        StringBuilder sb = new StringBuilder();
-        String methodMsgChat = "/sendMessage?chat_id=";
-        String methodMsgTxt = "&text=";
-
-        sb.append("https://api.telegram.org/bot")
-                .append(token)
-                .append(methodMsgChat)
-                .append(chatId)
-                .append(methodMsgTxt)
-                .append(msg);
-
-        String requestUrl= sb.toString();
-
-        return requestUrl;
-    }
-
-    public static void main(String[] args) {
-        String method = "";
-        method = "/getMe";
-        method = "/getUpdates";
-
-
-        String payload=null;
-        payload = null;
-        String requestUrl;
-
-
-        for(String st: BotPkg.login.MainClass.getUpList()){
-            requestUrl = msgSend(chatIdDef,st);
-            System.out.println(sendPostRequest(requestUrl, payload));
-        }
-
-    }
+//    public static String msgSend(String chatId, String msg) {
+//
+//        StringBuilder sb = new StringBuilder();
+//        String methodMsgChat = "/sendMessage?chat_id=";
+//        String methodMsgTxt = "&text=";
+//
+//        sb.append("https://api.telegram.org/bot")
+//                .append(token)
+//                .append(methodMsgChat)
+//                .append(chatId)
+//                .append(methodMsgTxt)
+//                .append(msg);
+//
+//        String requestUrl= sb.toString();
+//
+//        return requestUrl;
+//    }
 
 
 
+//    public static void maino(String[] args) {
+//        String method = "";
+//        method = "/getMe";
+//        method = "/getUpdates";
+//
+//        String payload=null;
+//        payload = null;
+//        String requestUrl;
+//
+//        for(String st: BotPkg.login.MainClass.getUpList()){
+//            requestUrl = msgSend(chatIdDef,st);
+//            System.out.println(sendPostRequest(requestUrl, payload));
+//        }
+//    }
+
+    @Deprecated
     public static String sendPostRequest(String requestUrl, String payload) {
         StringBuffer jsonString = new StringBuffer();
         try {

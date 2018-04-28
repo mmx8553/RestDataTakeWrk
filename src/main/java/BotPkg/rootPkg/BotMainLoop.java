@@ -1,10 +1,10 @@
 package BotPkg.rootPkg;
 
+import BotPkg.login.ServerStatusException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
-import BotPkg.login.ServerStatusException;
 import lombok.extern.java.Log;
 import org.telegram.telegrambots.api.objects.Update;
 
@@ -18,24 +18,34 @@ import java.util.List;
 @Log
 public class BotMainLoop {
     public static void main(String[] args) {
+
+        Utils uu = Utils.INSTANCE;
+
         try {
             maino();
+
+
         }catch(Exception e){
 
         }
     }
+
+
+
     public static void maino() throws IOException, ServerStatusException, InterruptedException {
         //создание сингтона
         Utils u = Utils.INSTANCE;
+        u.getRtData().init(u);
+        ProxConn pc = u.getProxyConnection();
+
+        BotMessaging bm = u.getBotMessaging();
 
 
         int localDelay = 1500;
 
         //System.out.println(Utils.INSTANCE.getJsonRtLoginPassword());
 
-        ProxConn pc = new ProxConn();
-
-        List<Update> lu = new ArrayList<>();
+        List<Update> lu = new ArrayList<Update>();
         ObjectMapper mapper = new ObjectMapper();
         JsonNode rootNode;
 
@@ -58,14 +68,30 @@ public class BotMainLoop {
                         Update firsstUpd = upd.get(0);
                         u.setMaxMessageOffset(firsstUpd.getUpdateId() + 1);
 
-                        int lastMessageNom = 1;
+//                        int lastMessageNom = 1;
                         System.out.println("messages = " + upd.size());
-                        System.out.println("first one text IS = " + firsstUpd.getMessage().getText());
+                        //System.out.println("first one text IS = " + firsstUpd.getMessage().getText());
+//GOT CALLBACKQUERY
+                        if (firsstUpd.hasCallbackQuery()){
+                            String cbData = firsstUpd.getCallbackQuery().getData();
+                            System.out.println("111 =  = CallbackDATA = " + cbData);
+                            Long chatId = firsstUpd.getCallbackQuery().getMessage().getChatId();
+                            bm.processAfterGotCallback(chatId, cbData);
+                        }
+// GOT TEXT MESSAGE
+                        if (firsstUpd.hasMessage()  && firsstUpd.getMessage().hasText()) {
+                            String txtMsg = firsstUpd.getMessage().getText();
+                            Long chatId = firsstUpd.getMessage().getChatId();
+                            bm.processAfterGotTextMessage(chatId, txtMsg);
+
+                            System.out.println("000 = (получено сообщение) = " + txtMsg);
+
+                        }
                     } else {
                         if (hasMsg) {
-                            System.out.println("no messages");
+                            System.out.println(" - - - no messages  - - -  waiting for new one");
                             hasMsg = false;
-                            localDelay = 2300;
+                            localDelay = 1700;
                         }
                     }
 
@@ -82,4 +108,6 @@ public class BotMainLoop {
 
 
     }
+
+
 }
