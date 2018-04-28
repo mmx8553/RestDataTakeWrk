@@ -1,4 +1,4 @@
-package login;
+package BotPkg.login;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -48,7 +48,7 @@ public class WriteBotString {
         String requestUrl;
 
 
-        for(String st:login.MainClass.getUpList()){
+        for(String st: BotPkg.login.MainClass.getUpList()){
             requestUrl = msgSend(chatIdDef,st);
             System.out.println(sendPostRequest(requestUrl, payload));
         }

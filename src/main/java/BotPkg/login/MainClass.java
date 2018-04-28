@@ -1,4 +1,4 @@
-package login;
+package BotPkg.login;
 
 import org.apache.http.ParseException;
 import org.json.JSONArray;
@@ -20,30 +20,30 @@ public class MainClass {
 
 
 
-    public  static String payload = "{\"login\":\"kamaz-maxim\",\"password\":\"nEWkj3_hG5\"}";
+    public  static String payload = "{\"BotPkg.login\":\"kamaz-maxim\",\"password\":\"nEWkj3_hG5\"}";
     public  static String baseaddr = "https://sandbox.rightech.io/api/v1";
     public  static String requestUrl = "/auth/token";
 //        String    requestUrl="http://search.twitter.com/search.json?q=apple";
 
 
-    public static void main(String[] args) {
+    public static void maino(String[] args) {
         getUpList();
     }
 
 
     public static ArrayList<String> getUpList(){
-        ConnExec ce = new ConnExec();
+        RtData ce = new RtData();
         System.out.println();
         ArrayList<String> ast = new ArrayList<String>();
         try {
 
-            String tmpStr =  ConnExec.sendRequest("POST",baseaddr, requestUrl, payload, null).toString();
+            String tmpStr =  RtData.sendRequest("POST",baseaddr, requestUrl, payload, null).toString();
             //System.out.println(tmpStr);
 
             String tmpToken = new JSONObject(tmpStr).get("token").toString();
             //System.out.println(new JSONObject(tmpStr).get("token"));
 
-            tmpStr =  ConnExec.sendRequest("GET",baseaddr, "/objects", null, tmpToken).toString();
+            tmpStr =  RtData.sendRequest("GET",baseaddr, "/objects", null, tmpToken).toString();
             //System.out.println("str all objects = " + tmpStr);
 
             //JSONParser JsPrsr = new JSONParser();

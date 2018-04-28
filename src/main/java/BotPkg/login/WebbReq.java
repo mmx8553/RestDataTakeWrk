@@ -1,9 +1,8 @@
-package login;
+package BotPkg.login;
 
-import EmptyBot.Utils;
 import org.json.JSONObject;
-import webbPkg.Webb;
-import webbPkg.WebbException;
+import BotPkg.webbPkg.Webb;
+import BotPkg.webbPkg.WebbException;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
@@ -52,7 +51,7 @@ public class WebbReq {
     }
 
     public boolean createToken(WebbReq webbReq ){
-        ConnExec ce = new ConnExec();
+        RtData ce = new RtData();
         JSONObject result;
         String tokenUrl = ce.baseaddr+ce.requestTokenUrl;
         String JSONUsrPwd = ce.jsonLoginPassword;
@@ -78,42 +77,20 @@ public class WebbReq {
 
     }
 
-    public String getRespStringToUrl( WebbReq webbReq , String urlSt){
-
-        ConnExec ce = Utils.getInstance().ce;
-        //JSONObject result;
-        String  result = null;
-        try {
-            result = webbReq.getWebb().get(urlSt)
-                    .asString()
-                    .toString();
-
-        }catch (Exception e){
-            System.out.println("Error = WebbReq.getUrlString:"+ e.getMessage());
-            e.printStackTrace();
-        }
-        return result;
-    }
 
 
     public String getObjectGeoData( WebbReq webbReq , String id) throws WebbException{
 
-        ConnExec ce = new ConnExec();
+        RtData ce = new RtData();
         JSONObject result = null;
         //String  result = null;
         String url = ce.baseaddr+ce.requestObjects+"/"+id;
         try {
                 result = webbReq.getWebb().get(url)
                         .header("Authorization",new StringBuilder().append("Bearer ").append(webbReq.getToken()).toString())
-                        //.retry(1, false) // at most one retry, don't do exponential backoff
-//                        .asJsonArray()
                         .asJsonObject()
                         .getBody();
 
-
-//            result = webbReq.getWebb().get(url)
-//                    .asJsonObject()
-//                    .getBody();
 
         }catch (WebbException we){
             System.out.println("Error = WebbReq.getUrlString:"+ we.getMessage());
@@ -131,7 +108,7 @@ public class WebbReq {
 
 
 //    public Map<String,String> getBotRootObjectsMap(WebbReq webbReq){
-//        ConnExec ce = new ConnExec();
+//        RtData ce = new RtData();
 //        System.out.println();
 //        //ArrayList<String> ast = new ArrayList<String>();
 //        Map<String,String> stringMap = new HashMap<>();
@@ -178,7 +155,7 @@ public class WebbReq {
 
 
 //    public Map<String,String> getButtonMapToPrint(){
-//        ConnExec ce = new ConnExec();
+//        RtData ce = new RtData();
 //        WebbReq webbReq = new WebbReq(false);
 //
 //        if (!webbReq.createToken(webbReq, ce.baseaddr + ce.requestTokenUrl, ce.jsonLoginPassword)) {
@@ -196,7 +173,7 @@ public class WebbReq {
 
     public static void main(String[] args) {
 
-        ConnExec ce = new ConnExec();
+        RtData ce = new RtData();
         WebbReq webbReq = new WebbReq(false);
 
         if (!webbReq.createToken(webbReq )) {

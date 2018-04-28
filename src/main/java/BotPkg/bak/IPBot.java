@@ -1,8 +1,7 @@
-package EmptyBot;
+package BotPkg.bak;
 
-import login.WebbReq;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import BotPkg.rootPkg.Utils;
+import BotPkg.login.WebbReq;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.api.objects.replykeyboard.InlineKeyboardMarkup;
@@ -14,21 +13,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static BotPkg.rootPkg.TgUserState.*;
+
 /**
- * Created by OsipovMS on 02.04.2018.
+ * Created by OsipovMS on 27.04.2018.
  */
-@Component
+@Deprecated
 public class IPBot extends TelegramLongPollingBot {
 
-    @Value("${bot.token}")
-    private String token;
+
+    Utils u = Utils.INSTANCE;
 
 
     private final String YES = "YES";
     private final String NO = "NO";
 
     private WebbReq webbReq = new WebbReq(false);
-    private Utils utils = new Utils();
+    private Utils utils = Utils.INSTANCE;
+    //todo = remake Singleton usage in thi Class
 
     IPBot(){
         //System.out.println(getBotToken());
@@ -38,7 +40,7 @@ public class IPBot extends TelegramLongPollingBot {
 
 
 
-    private  List<List<InlineKeyboardButton>> getButtonList( Map<String,String> arrayNames) {
+    private  List<List<InlineKeyboardButton>> getButtonList(Map<String,String> arrayNames) {
 
         List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
         List<InlineKeyboardButton> rowInline; // = new ArrayList<>();
@@ -101,36 +103,36 @@ public class IPBot extends TelegramLongPollingBot {
         System.out.println("update message happens");
         String messageText = update.getMessage().getText();
         long chat_id = update.getMessage().getChatId();
-//~LOG
+        //~LOG
         System.err.println(messageText.toString());
         System.out.println("");
 
-// 0
+        // 0
         if (messageText.equals("?")){
             this.showAbout(chat_id);
         }
-// 1
+        // 1
         else if(messageText.equals("*")||messageText.equals("/start")){
 
             printRootMenu(chat_id);
         }
-// 2
+        // 2
         else {
-                this.printTgMessage(chat_id,"OK");
-//                update.getMessage().
+            this.printTgMessage(chat_id,"OK");
+            //                update.getMessage().
         }
     }
 
     public void printRootMenu(Long chat_id){
         StringBuilder sb = new StringBuilder().append(" KAMAZ - трэкеры").append("\n").append("Выбор объекта:").append("\n");
-        utils.setTgUserSate(chat_id,  TgUserState.ObjectSelectMenu);
+        utils.setTgUserSate(chat_id, ObjectSelectMenu);
         this.buttonToSelectPrint(chat_id, sb.toString(), utils.getButtonMapToPrint());
 
     }
 
     public void printObjectMenu(Long chat_id, String callBackData){
         StringBuilder sb = new StringBuilder().append(" Просмотр параметров :").append("\n");
-        utils.setTgUserSate(chat_id,  TgUserState.ParameterSelectMenu);
+        utils.setTgUserSate(chat_id, ParameterSelectMenu);
 
         this.buttonToSelectPrint(chat_id, sb.toString(), utils.getParamButtonMapToPrint() );
 
@@ -145,12 +147,12 @@ public class IPBot extends TelegramLongPollingBot {
 
         String strClBkData = update.getCallbackQuery().getData().toString();
 
-//        StringBuilder sb = new StringBuilder();
+        //        StringBuilder sb = new StringBuilder();
         String callBackData = update.getCallbackQuery().getData();
 
         SendMessage message;
 
-//        sb.append("KAMAZ truck ...").append("\n");
+        //        sb.append("KAMAZ truck ...").append("\n");
 
         System.err.println("msg - call bk = " + strClBkData);
 
@@ -165,7 +167,7 @@ public class IPBot extends TelegramLongPollingBot {
          */
         try {
 
-            if (utils.getTgUserState(chat_id).equals(TgUserState.ObjectSelectMenu)) {
+            if (utils.getTgUserState(chat_id).equals(ObjectSelectMenu)) {
 
                 this.printTgMessage(chat_id, "ID = " + callBackData);
 
@@ -173,7 +175,7 @@ public class IPBot extends TelegramLongPollingBot {
 
                 this.printObjectMenu(chat_id,callBackData);
 
-            }else if (utils.getTgUserState(chat_id).equals(TgUserState.ParameterSelectMenu)){
+            }else if (utils.getTgUserState(chat_id).equals(ParameterSelectMenu)){
                 String objectId = utils.getSelectedObjectId(chat_id);
                 printTgMessage(chat_id,objectId + "  :  " + callBackData);
 
@@ -189,14 +191,14 @@ public class IPBot extends TelegramLongPollingBot {
         }
 
 
-//
-//        if (callBackData.equals("")) {
-//            //in this case = do nothing
-//        } else if (callBackData.equals("123")){
-//                printTgMessage(chat_id,"Оч. секретный раздел !");
-//        }else {
-//            //showHelp(chat_id);     //todo
-//        }
+        //
+        //        if (callBackData.equals("")) {
+        //            //in this case = do nothing
+        //        } else if (callBackData.equals("123")){
+        //                printTgMessage(chat_id,"Оч. секретный раздел !");
+        //        }else {
+        //            //showHelp(chat_id);     //todo
+        //        }
     }
 
 
@@ -228,15 +230,14 @@ public class IPBot extends TelegramLongPollingBot {
 
 
     @Override
-    public String getBotUsername() {
-        return "Kamazi_bot";//"KamazBot"; //"Kamaz_bot";
+    public String getBotUsername()
+    {
+        return u.getNameTg();
     }
 
     @Override
     public String getBotToken() {
-        return "523022396:AAFryNlfFVL5WOTAD35BM4bBL832zis_ERE";
-//        System.out.println(token);
-//        return token;
+        return u.getTokenTg();
     }
 
 

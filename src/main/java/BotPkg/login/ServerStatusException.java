@@ -1,4 +1,4 @@
-package login;
+package BotPkg.login;
 
 /**
  * Created by OsipovMS on 21.03.2018.

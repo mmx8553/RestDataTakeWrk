@@ -1,8 +1,10 @@
-package EmptyBot;
+package BotPkg.rootPkg;
 
-import com.google.inject.Singleton;
-import login.ConnExec;
-import login.WebbReq;
+import BotPkg.login.RtData;
+import BotPkg.login.WebbReq;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.java.Log;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -14,42 +16,88 @@ import java.util.Map;
  * Created by OsipovMS on 11.04.2018.
  */
 
-@SuppressWarnings("unchecked")
-@Singleton
-public class  Utils {
+//@SuppressWarnings("unchecked")
+//@Singleton
 
-    private static Utils instance = new Utils();
-    private Utils(){
+@Log
+public enum Utils {
+
+    INSTANCE;
+//    private static Utils instance = new Utils();
+
+    private String baseaddrRt = "https://sandbox.rightech.io/api/v1";
+    private String requestTokenUrlRt = "/auth/token";
+    private String requestObjectsRt = "/objects";
+
+    @Getter @Setter
+    private boolean useProx = true;
+
+    @Getter
+    private String tokenTg;
+
+    @Getter
+    private String nameTg;
+
+    @Getter
+    private String jsonRtLoginPassword;
+
+    @Getter @Setter
+    private int maxMessageOffset = 0;
+
+
+
+
+
+    private Map<String,String> loginDataMap= new HashMap<>();
+
+    private YmlRead yml = new YmlRead(null);
+
+    Utils(){
+        this.init();
     }
-    public static Utils getInstance(){
-        return instance;
+
+    public Utils getInstance(){
+        return INSTANCE;
     }
 
-    public WebbReq webbReq = new WebbReq(true);
-    public ConnExec ce = new ConnExec();
+    public WebbReq webbRequest = new WebbReq(true);
+    public RtData mxRequest = new RtData();
 
 
 
-    private String token;
+    private void init(){
+        try {
+            loginDataMap = yml.getValues();
 
-    public String payload = "{\"login\":\"kamaz-maxim\",\"password\":\"nEWkj3_hG5\"}";
-    public String jsonLoginPassword = "{\"login\":\"kamaz-maxim\",\"password\":\"nEWkj3_hG5\"}";
-    public String baseaddr = "https://sandbox.rightech.io/api/v1";
-    public String requestTokenUrl = "/auth/token";
-    public String requestObjects = "/objects";
+            tokenTg = loginDataMap.get("bot.token");
 
-    public String getToken() {
-        return token;
+            nameTg = loginDataMap.get("bot.botname");
+
+            JSONObject joRT = new JSONObject()
+                    .put("BotPkg/login",loginDataMap.get("rt.botname"))
+                    .put("password",loginDataMap.get("rt.password"));
+            jsonRtLoginPassword = joRT.toString();
+
+            String stProxy= loginDataMap.get("bot.useproxy");
+            useProx = (stProxy.equals("ok"));
+
+
+
+        }catch (Exception e){
+            System.err.println("Utils.init = error");
+            e.printStackTrace();
+        }
+//        log.info("Utils.init = ok");
+//        this LOG is not works in SINLETONE
+
     }
 
-    public void setToken(String token) {
-        this.token = token;
-    }
 
+//    private String token;
+//    public String getToken() {
+//        return token;
+//    }
 
-
-//    public static final String objectsUrl = "";
-//    private TgUserState tgUserState;
 
     /**
      * текущее аоложение в дереве меню пользователя
@@ -83,7 +131,7 @@ public class  Utils {
 
 
     public Map<String,String> getButtonMapToPrint(){
-        ConnExec ce = new ConnExec();
+        RtData ce = new RtData();
         WebbReq webbReq = new WebbReq(false);
 
         if (!webbReq.createToken(webbReq)) {
@@ -101,6 +149,7 @@ public class  Utils {
     /**
      * меню на объект
      * @return
+     * <колбэк-дата, Надпись-на-кнопке>
      */
     public Map<String,String> getParamButtonMapToPrint(){
 
@@ -114,11 +163,12 @@ public class  Utils {
 
 
 
-    public Map<String,String> getBotRootObjectsMap(WebbReq webbReq, ConnExec ce){
+    public Map<String,String> getBotRootObjectsMap(WebbReq webbReq, RtData ce){
 
 
+        log.info("aaa");
 
-        System.out.println();
+        //System.out.println();
         Map<String,String> stringMap = new HashMap<>();
 
         JSONArray result = null;
@@ -131,6 +181,7 @@ public class  Utils {
             //System.err.println("objects = " + result.toString());
 
         }catch (Exception e){
+
             System.out.println("Error - WebbReq = getObjectsList error =  :"+ e.getMessage());
             e.printStackTrace();
 
@@ -159,7 +210,7 @@ public class  Utils {
     }
 
 
-    public Map<String,String> getParamList(WebbReq webbReq, ConnExec ce){
+    public Map<String,String> getParamList(WebbReq webbReq, RtData ce){
 
 
 

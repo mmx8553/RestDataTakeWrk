@@ -9,54 +9,9 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.0.0.RELEASE</version>
-        <relativePath />
-    </parent>
-
-    <!--<build>-->
-        <!--<plugins>-->
-            <!--<plugin>-->
-                <!--<groupId>org.apache.maven.plugins</groupId>-->
-                <!--<artifactId>maven-compiler-plugin</artifactId>-->
-                <!--<configuration>-->
-                    <!--<source>1.8</source>-->
-                    <!--<target>1.8</target>-->
-                <!--</configuration>-->
-            <!--</plugin>-->
-        <!--</plugins>-->
-    <!--</build>-->
-
-    <profiles>
-        <profile>
-            <id>profile1</id>
-            <properties>
-                <spring.boot.mainclass>BotMain</spring.boot.mainclass>
-            </properties>
-        </profile>
-        <!--<profile>-->
-            <!--<id>profile2</id>-->
-            <!--<properties>-->
-                <!--<spring.boot.mainclass>com.SomeOtherClass</spring.boot.mainclass>-->
-            <!--</properties>-->
-        <!--</profile>-->
-    </profiles>
 
     <dependencies>
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-configuration-processor</artifactId>
-            <optional>true</optional>
-        </dependency>
-
-        <dependency>
-            <groupId>com.github.xabgesagtx</groupId>
-            <artifactId>telegram-spring-boot-starter</artifactId>
-            <version>0.16</version>
-        </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.jsoup/jsoup -->
         <dependency>
@@ -75,101 +30,10 @@
         </dependency>
 
 
-
-        <!--&lt;!&ndash; https://mvnrepository.com/artifact/javax.ws.rs/javax.ws.rs-api &ndash;&gt;-->
-        <!--<dependency>-->
-            <!--<groupId>javax.ws.rs</groupId>-->
-            <!--<artifactId>javax.ws.rs-api</artifactId>-->
-            <!--<version>2.0</version>-->
-            <!--<scope>system</scope>-->
-            <!--<systemPath>${project.basedir}/src/main/resources/javax.ws.rs-api-2.0.jar</systemPath>-->
-        <!--</dependency>-->
-        <!--&lt;!&ndash; https://mvnrepository.com/artifact/com.sun.jersey/jersey-bundle &ndash;&gt;-->
-
-        <!--<dependency>-->
-            <!--<groupId>com.sun.jersey</groupId>-->
-            <!--<artifactId>jersey-bundle</artifactId>-->
-            <!--<version>1.19.4</version>-->
-            <!--<scope>system</scope>-->
-            <!--<systemPath>${project.basedir}/src/main/resources/jersey-bundle-1.19.4.jar</systemPath>-->
-        <!--</dependency>-->
-
-
-        <!--&lt;!&ndash; https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient &ndash;&gt;-->
-        <!--<dependency>-->
-            <!--<groupId>org.apache.httpcomponents</groupId>-->
-            <!--<artifactId>httpclient</artifactId>-->
-            <!--<version>4.3.6</version>-->
-            <!--<scope>system</scope>-->
-            <!--<systemPath>${project.basedir}/src/main/resources/httpclient-4.3.6.jar</systemPath>-->
-        <!--</dependency>-->
-
-        <!--<dependency>-->
-            <!--<groupId>org.apache.cxf</groupId>-->
-            <!--<artifactId>cxf-rt-rs-client</artifactId>-->
-            <!--<version>3.2.0</version>-->
-        <!--</dependency>-->
-
-        <!--<dependency>-->
-            <!--<groupId>org.apache.cxf</groupId>-->
-            <!--<artifactId>cxf-rt-transports-http-hc</artifactId>-->
-            <!--&lt;!&ndash; 2.7.8 or 3.0.15 &ndash;&gt;-->
-            <!--&lt;!&ndash;<version>${cxf.version}</version>&ndash;&gt;-->
-            <!--<version>3.2.0</version>-->
-        <!--</dependency>-->
-
-        <!-- https://mvnrepository.com/artifact/org.apache.cxf/cxf-bundle -->
-        <!--<dependency>-->
-            <!--<groupId>org.apache.cxf</groupId>-->
-            <!--<artifactId>cxf-bundle</artifactId>-->
-            <!--<version>3.0.0-milestone2</version>-->
-        <!--</dependency>-->
-        <!--&lt;!&ndash; https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient &ndash;&gt;-->
-        <!--<dependency>-->
-            <!--<groupId>org.apache.httpcomponents</groupId>-->
-            <!--<artifactId>httpclient</artifactId>-->
-            <!--<version>4.5.5</version>-->
-        <!--</dependency>-->
-
-        <!-- https://mvnrepository.com/artifact/javax.websocket/javax.websocket-api -->
-        <!-- https://mvnrepository.com/artifact/org.json/json -->
-        <!--<dependency>-->
-            <!--<groupId>org.json</groupId>-->
-            <!--<artifactId>json</artifactId>-->
-            <!--<version>20180130</version>-->
-        <!--</dependency>-->
-
-
-        <!--<dependency>-->
-            <!--<groupId>com.googlecode.json-simple</groupId>-->
-            <!--<artifactId>json-simple</artifactId>-->
-            <!--<version>1.1.1</version>-->
-        <!--</dependency>-->
-
-
     </dependencies>
 
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                        <configuration>
-                            <mainClass>${spring.boot.mainclass}</mainClass>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-release-plugin</artifactId>
-                <version>2.5.3</version>
-            </plugin>
 
             <plugin>
             <groupId>org.apache.maven.plugins</groupId>
@@ -179,6 +43,39 @@
             <target>1.8</target>
             </configuration>
             </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.5.3</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>3.1.0</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>2.8.2</version>
+            </plugin>
+
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-install-plugin</artifactId>
+                <version>2.5.2</version>
+            </plugin>
+
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>3.6</version>
+            </plugin>
+
 
         </plugins>
     </build>
