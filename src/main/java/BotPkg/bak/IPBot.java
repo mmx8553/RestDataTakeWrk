@@ -1,7 +1,7 @@
 package BotPkg.bak;
 
 import BotPkg.rootPkg.Utils;
-import BotPkg.login.WebbReq;
+import lombok.extern.java.Log;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.api.objects.replykeyboard.InlineKeyboardMarkup;
@@ -18,21 +18,25 @@ import static BotPkg.rootPkg.TgUserState.*;
 /**
  * Created by OsipovMS on 27.04.2018.
  */
-@Deprecated
+//@Deprecated
+@Log
 public class IPBot extends TelegramLongPollingBot {
 
 
-    Utils u = Utils.INSTANCE;
+    public Utils u;
 
 
     private final String YES = "YES";
     private final String NO = "NO";
 
-    private WebbReq webbReq = new WebbReq(false);
-    private Utils utils = Utils.INSTANCE;
+//    private WebbReq webbReq = new WebbReq(false);
+    //private Utils utils = Utils.INSTANCE;
     //todo = remake Singleton usage in thi Class
 
+
     IPBot(){
+        u = Utils.INSTANCE;
+        u.getRtData().init(u);
         //System.out.println(getBotToken());
 
     }
@@ -125,16 +129,16 @@ public class IPBot extends TelegramLongPollingBot {
 
     public void printRootMenu(Long chat_id){
         StringBuilder sb = new StringBuilder().append(" KAMAZ - трэкеры").append("\n").append("Выбор объекта:").append("\n");
-        utils.setTgUserSate(chat_id, ObjectSelectMenu);
-        this.buttonToSelectPrint(chat_id, sb.toString(), utils.getButtonMapToPrint());
+        u.setTgUserSate(chat_id, ObjectSelectMenu);
+        this.buttonToSelectPrint(chat_id, sb.toString(), u.getRtData().getRootObjectList());
 
     }
 
     public void printObjectMenu(Long chat_id, String callBackData){
         StringBuilder sb = new StringBuilder().append(" Просмотр параметров :").append("\n");
-        utils.setTgUserSate(chat_id, ParameterSelectMenu);
+        u.setTgUserSate(chat_id, ParameterSelectMenu);
 
-        this.buttonToSelectPrint(chat_id, sb.toString(), utils.getParamButtonMapToPrint() );
+        this.buttonToSelectPrint(chat_id, sb.toString(), u.getRtData().getParamButtonMapToPrint() );
 
     }
 
@@ -167,21 +171,50 @@ public class IPBot extends TelegramLongPollingBot {
          */
         try {
 
-            if (utils.getTgUserState(chat_id).equals(ObjectSelectMenu)) {
+            if (u.getTgUserState(chat_id).equals(ObjectSelectMenu)) {
 
                 this.printTgMessage(chat_id, "ID = " + callBackData);
 
-                utils.setSelectedObjectId(chat_id,callBackData);
+                u.setSelectedObjectId(chat_id,callBackData);
 
                 this.printObjectMenu(chat_id,callBackData);
 
-            }else if (utils.getTgUserState(chat_id).equals(ParameterSelectMenu)){
-                String objectId = utils.getSelectedObjectId(chat_id);
+            }else if (u.getTgUserState(chat_id).equals(ParameterSelectMenu)){
+                String objectId = null;
+                try {
+                    objectId = u.getSelectedObjectId(chat_id);
+                } catch (NullPointerException e){
+                    log.info(e.getMessage());
+                }
+
+                if (objectId==null){
+                    u.setTgUserSate(chat_id,RootMenu);
+                }
+                //1
                 printTgMessage(chat_id,objectId + "  :  " + callBackData);
 
-                String locSt = "";
+                if (callBackData.equals("geo")) {
+                    u.setTgUserSate(chat_id,GeoPositionWatch);
 
-                System.out.println(webbReq.getObjectGeoData(webbReq,objectId));
+                    //2
+                    printTgMessage(chat_id,objectId + "  :  " + callBackData);
+
+                    String locSt = u.getRtData().getObjectData(objectId);
+                    u.getBotMessaging().sendGeoLocation(u,chat_id, locSt);
+                }
+
+                if (callBackData.equals("tech")) {
+                    u.setTgUserSate(chat_id,TechParamWatch);
+                    printTgMessage(chat_id,objectId + "  :  " + callBackData);
+                    printTgMessage(chat_id, "  просмотр тех. параметров  " );
+                    String locSt = u.getRtData().getObjectData(objectId);
+//                    u.getBotMessaging().sendGeoLocation(chat_id, locSt);
+                }
+
+
+                //String
+                System.err.println("!!!!!!!!!!!!!!! =  = " + u.getRtData().getObjectData(objectId));
+                //System.out.println(u.getRtData().getObjectGeoData(webbReq,objectId));
             }
         }
         catch (Exception e){

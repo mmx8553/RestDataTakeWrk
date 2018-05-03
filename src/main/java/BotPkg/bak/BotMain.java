@@ -18,7 +18,7 @@ import org.telegram.telegrambots.exceptions.TelegramApiException;
 //@SpringBootApplication
 
 //@PropertySource("classpath:root/test.props")
-@Deprecated
+//@Deprecated
 public class BotMain {
 
     public static void main(String[] args) {
@@ -31,6 +31,7 @@ public class BotMain {
 
 
         Utils utils = Utils.INSTANCE;
+
         TelegramLongPollingBot myBot = new IPBot();
 
 

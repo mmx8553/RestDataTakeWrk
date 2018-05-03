@@ -6,7 +6,9 @@ package BotPkg.rootPkg;
 public enum TgUserState {
     RootMenu,
     ObjectSelectMenu ,
-    ParameterSelectMenu;
+    ParameterSelectMenu,
+    GeoPositionWatch,
+    TechParamWatch;
 
     /**
      * Created by OsipovMS on 02.04.2018.

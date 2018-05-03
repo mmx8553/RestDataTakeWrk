@@ -55,7 +55,7 @@ public class ProxConn {
 
     }
 
-    public String getBotSendtext(String msgTextUrl) throws IOException, ServerStatusException {
+    public String getReplyOfBotSendtextUrl(String msgTextUrl) throws IOException, ServerStatusException {
 
         String result = null;
 
