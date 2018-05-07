@@ -2,8 +2,6 @@ package BotPkg.rootPkg;
 
 import BotPkg.login.ServerStatusException;
 import lombok.extern.java.Log;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
 
@@ -21,6 +19,8 @@ public class BotMessaging {
     Utils u  = Utils.INSTANCE;
 
     public String getSendingTextMessageUrl(Long chatId, String message){
+
+        Utils u  = Utils.INSTANCE;
 
         StringBuilder sb = new StringBuilder();
         String methodMsgChat = "/sendMessage?chat_id=";
@@ -45,45 +45,46 @@ public class BotMessaging {
 //    }
 
     public void sendMessage(Long chatId, String message) throws IOException, ServerStatusException {
+        Utils u = Utils.INSTANCE;
         u.getProxyConnection().getReplyOfBotSendtextUrl(u.getBotMessaging().getSendingTextMessageUrl(chatId, message));
 
     }
 
-    public String getUrlLocation(Long chatId, String locationParam){
-
-        String lon = "0";
-        String lat= "51";
-        String state = "";
-        Utils uu = Utils.INSTANCE;
-
-        try {
-            JSONObject jo = new JSONObject(locationParam);
-            state = jo.get("state").toString();
-            lat = new JSONObject(state).get("lat").toString();
-            lon = new JSONObject(state).get("lon").toString();
-
-
-        }catch (JSONException e){
-            log.info(e.getMessage());
-        }
-
-
-
-        String stUrl = new StringBuilder().append("https://api.telegram.org/bot")
-                .append(uu.getTokenTg())
-                .append("/sendLocation?chat_id=")
-                .append(chatId)
-                .append("&latitude=")
-                .append(lat)
-                .append("&longitude=")
-                .append(lon).toString();
-
-        return stUrl;
-    }
-
+//    public String getUrlLocation(Long chatId, String locationParam){
+//
+//        String lon = "0";
+//        String lat= "51";
+//        String state = "";
+//        Utils uu = Utils.INSTANCE;
+//
+//        try {
+//            JSONObject jo = new JSONObject(locationParam);
+//            state = jo.get("state").toString();
+//            lat = new JSONObject(state).get("lat").toString();
+//            lon = new JSONObject(state).get("lon").toString();
+//
+//
+//        }catch (JSONException e){
+//            log.info(e.getMessage());
+//        }
+//
+//
+//
+//        String stUrl = new StringBuilder().append("https://api.telegram.org/bot")
+//                .append(uu.getTokenTg())
+//                .append("/sendLocation?chat_id=")
+//                .append(chatId)
+//                .append("&latitude=")
+//                .append(lat)
+//                .append("&longitude=")
+//                .append(lon).toString();
+//
+//        return stUrl;
+//    }
+//
 
     public void sendGeoLocation(Utils uu, Long chatId, String param) throws IOException, ServerStatusException {
-        uu.getProxyConnection().getReplyOfBotSendtextUrl(uu.getBotMessaging().getUrlLocation(chatId, param));
+        uu.getProxyConnection().getReplyOfBotSendtextUrl( uu.getRtData().getUrlLocation(chatId, param));
     }
 
 
@@ -91,6 +92,7 @@ public class BotMessaging {
 
 
     public void processAfterGotTextMessage(Long chatID , String gotMsg) throws IOException, ServerStatusException {
+        Utils u = Utils.INSTANCE;
         if (gotMsg.equals("?")){
 
             u.getBotMessaging().sendMessage(chatID,"some helping text");
@@ -107,6 +109,8 @@ public class BotMessaging {
 //    }
 
     public void processAfterGotCallback(Long chatID , String gotData){
+        Utils u  = Utils.INSTANCE;
+
 
     }
 

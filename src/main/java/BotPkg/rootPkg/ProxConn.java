@@ -40,6 +40,8 @@ public class ProxConn {
 
     public String getBotUpdates() throws IOException, ServerStatusException {
 
+        Utils u = Utils.INSTANCE;
+
         int offsetMax = u.getMaxMessageOffset();
 
         String reqUrlString = String.format("https://api.telegram.org/bot%s%s%s",u.getTokenTg() ,"/getUpdates?offset=",offsetMax);
@@ -70,6 +72,8 @@ public class ProxConn {
 
     public String getBotResponse(String reqUrl) throws IOException, ServerStatusException {
 
+        Utils u = Utils.INSTANCE;
+
         String[] tok = proxx.split(":", 2);
         Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(tok[0],new Integer( tok[1]).intValue()));
 
@@ -80,11 +84,17 @@ public class ProxConn {
 
             //with proxy
             HttpURLConnection connection;
+
             if (u.isUseProx()) {
                 connection = (HttpURLConnection) url.openConnection(proxy);
             }else{
                 connection = (HttpURLConnection) url.openConnection();
             }
+
+
+
+//            connection = (HttpURLConnection) url.openConnection();
+
 
             connection.setDoInput(true);
             connection.setDoOutput(true);

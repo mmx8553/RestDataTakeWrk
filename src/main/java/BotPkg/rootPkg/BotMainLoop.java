@@ -40,6 +40,8 @@ public class BotMainLoop {
 
         BotMessaging bm = u.getBotMessaging();
 
+        u.setUseProx(true);
+
 
         int localDelay = 1500;
 
@@ -84,7 +86,7 @@ public class BotMainLoop {
                             Long chatId = firsstUpd.getMessage().getChatId();
                             bm.processAfterGotTextMessage(chatId, txtMsg);
 
-                            System.out.println("000 = (получено сообщение) = " + txtMsg);
+                            System.out.println("000 = (получено сообщение) = " + txtMsg + "     \n\tCHAT = " + chatId.toString());
 
                         }
                     } else {

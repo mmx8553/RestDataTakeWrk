@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.extern.java.Log;
 import org.apache.http.ParseException;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -236,6 +237,81 @@ public class RtData {
     }
 
 
+    public String getUrlLocation(Long chatId, String locationParam){
+
+        String lon = "0";
+        String lat= "51";
+        String state = "";
+        Utils uu = Utils.INSTANCE;
+
+        try {
+            JSONObject jo = new JSONObject(locationParam);
+            state = jo.get("state").toString();
+            lat = new JSONObject(state).get("lat").toString();
+            lon = new JSONObject(state).get("lon").toString();
+
+
+        }catch (JSONException e){
+            log.info(e.getMessage());
+        }
+
+
+
+        String stUrl = new StringBuilder().append("https://api.telegram.org/bot")
+                .append(uu.getTokenTg())
+                .append("/sendLocation?chat_id=")
+                .append(chatId)
+                .append("&latitude=")
+                .append(lat)
+                .append("&longitude=")
+                .append(lon).toString();
+
+        return stUrl;
+    }
+
+
+    public String getStringParamFromJSON(String jsonString, String param){
+
+        try {
+            JSONObject jo = new JSONObject(jsonString);
+            String state = jo.get("state").toString();
+            String result = new JSONObject(state).get(param).toString();
+            return result;
+
+        }catch (JSONException e){
+            log.info(e.getMessage());
+        }
+
+        return "no_data";
+    }
+
+
+    public String getStringTechParam( String jsonParamString){
+
+//        mmx
+
+        String speed= "0";
+        String fuel = "0";
+        String fuelTemp = "0";
+
+        String state = "";
+        Utils uu = Utils.INSTANCE;
+
+        speed = getStringParamFromJSON(jsonParamString,"speed");
+
+        fuel = getStringParamFromJSON(jsonParamString,"fuel-level");
+        if (fuel.equals("no_data")){
+            fuel = getStringParamFromJSON(jsonParamString,"fuel_lev_p");
+        }
+
+
+        String textParamOutput = new StringBuilder().append("\n")
+                .append("1. скорость : ").append(speed).append("\n")
+                .append("2. топливо : ").append(fuel).append("\n")
+                .append("etc.").toString();
+
+        return textParamOutput;
+    }
 
 
 
@@ -359,6 +435,8 @@ public class RtData {
 //        return this.sendRequest("GET", "https://api.telegram.org/bot", endOfAddr, "", "");
 //
 //    }
+
+
 
 
 }

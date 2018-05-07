@@ -1,5 +1,7 @@
 package BotPkg.bak;
 
+import BotPkg.login.ServerStatusException;
+import BotPkg.login.WrongParameterException;
 import BotPkg.rootPkg.Utils;
 import lombok.extern.java.Log;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
@@ -9,7 +11,9 @@ import org.telegram.telegrambots.api.objects.replykeyboard.buttons.InlineKeyboar
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -37,6 +41,7 @@ public class IPBot extends TelegramLongPollingBot {
     IPBot(){
         u = Utils.INSTANCE;
         u.getRtData().init(u);
+        u.setUseProx(false);
         //System.out.println(getBotToken());
 
     }
@@ -112,7 +117,7 @@ public class IPBot extends TelegramLongPollingBot {
         System.out.println("");
 
         // 0
-        if (messageText.equals("?")){
+        if (messageText.equals("?")||messageText.equals("/help")){
             this.showAbout(chat_id);
         }
         // 1
@@ -122,23 +127,48 @@ public class IPBot extends TelegramLongPollingBot {
         }
         // 2
         else {
-            this.printTgMessage(chat_id,"OK");
-            //                update.getMessage().
+            showAbout(chat_id);
+//            this.printTgMessage(chat_id,"Ok");
         }
     }
 
     public void printRootMenu(Long chat_id){
-        StringBuilder sb = new StringBuilder().append(" KAMAZ - трэкеры").append("\n").append("Выбор объекта:").append("\n");
+        StringBuilder sb = new StringBuilder().append(" Список КАМАЗов (трэкеры)").append("\n").append("Выбор объекта:").append("\n");
         u.setTgUserSate(chat_id, ObjectSelectMenu);
+        u.setSelectedObjectId(chat_id,null);
         this.buttonToSelectPrint(chat_id, sb.toString(), u.getRtData().getRootObjectList());
 
     }
+
+
+    public void printRepeatButton(Long chat_id){
+        Map<String,String> stringMap = new HashMap<>();
+        stringMap.put("repeat", " ДА ");
+        stringMap.put("root", " НЕТ ");
+        this.buttonToSelectPrint(chat_id, "Повторить ? ", stringMap/*u.getRtData().getRootObjectList()*/  );
+
+    }
+
+
 
     public void printObjectMenu(Long chat_id, String callBackData){
         StringBuilder sb = new StringBuilder().append(" Просмотр параметров :").append("\n");
         u.setTgUserSate(chat_id, ParameterSelectMenu);
 
         this.buttonToSelectPrint(chat_id, sb.toString(), u.getRtData().getParamButtonMapToPrint() );
+
+    }
+
+    public void printTechParam(Long chatId, String objectId){
+        printTgMessage(chatId, " Tех. параметры : " );
+        String locSt = u.getRtData().getObjectData(objectId);
+        printTgMessage(chatId, u.getRtData().getStringTechParam(locSt));
+
+    }
+
+    private void printGeoLocation (Utils u, Long chatId, String objectId) throws IOException, ServerStatusException {
+        String locSt = u.getRtData().getObjectData(objectId);
+        u.getBotMessaging().sendGeoLocation(u,chatId, locSt);
 
     }
 
@@ -171,67 +201,85 @@ public class IPBot extends TelegramLongPollingBot {
          */
         try {
 
+            String objectId = null;
+            try {
+                objectId = u.getSelectedObjectId(chat_id);
+            } catch (NullPointerException e){
+                log.info(e.getMessage());
+            }
+
+
             if (u.getTgUserState(chat_id).equals(ObjectSelectMenu)) {
 
-                this.printTgMessage(chat_id, "ID = " + callBackData);
+//                this.printTgMessage(chat_id, "ID = " + callBackData);
 
                 u.setSelectedObjectId(chat_id,callBackData);
 
                 this.printObjectMenu(chat_id,callBackData);
 
-            }else if (u.getTgUserState(chat_id).equals(ParameterSelectMenu)){
-                String objectId = null;
-                try {
-                    objectId = u.getSelectedObjectId(chat_id);
-                } catch (NullPointerException e){
-                    log.info(e.getMessage());
-                }
+            }else {
+                // объект выбран
 
                 if (objectId==null){
                     u.setTgUserSate(chat_id,RootMenu);
+                    throw new WrongParameterException("Menu position (of chatId) = laje");
                 }
-                //1
-                printTgMessage(chat_id,objectId + "  :  " + callBackData);
+
+
 
                 if (callBackData.equals("geo")) {
                     u.setTgUserSate(chat_id,GeoPositionWatch);
 
-                    //2
-                    printTgMessage(chat_id,objectId + "  :  " + callBackData);
+//                    String locSt = u.getRtData().getObjectData(objectId);
+//                    u.getBotMessaging().sendGeoLocation(u,chat_id, locSt);
 
-                    String locSt = u.getRtData().getObjectData(objectId);
-                    u.getBotMessaging().sendGeoLocation(u,chat_id, locSt);
+                    printGeoLocation(u,chat_id,objectId);
+
+                    printRepeatButton(chat_id);
+
                 }
 
                 if (callBackData.equals("tech")) {
                     u.setTgUserSate(chat_id,TechParamWatch);
-                    printTgMessage(chat_id,objectId + "  :  " + callBackData);
-                    printTgMessage(chat_id, "  просмотр тех. параметров  " );
-                    String locSt = u.getRtData().getObjectData(objectId);
-//                    u.getBotMessaging().sendGeoLocation(chat_id, locSt);
+//                    u.setSelectedObjectId();
+//                    printTgMessage(chat_id,objectId + "  :  " + callBackData);
+
+                    printTechParam(chat_id, objectId);
+
+                    printRepeatButton(chat_id);
+
+                }
+
+                if (callBackData.equals("repeat")) {
+                    if (u.getTgUserState(chat_id).equals(GeoPositionWatch)){
+                        printGeoLocation(u,chat_id,objectId);
+                    }
+                    if (u.getTgUserState(chat_id).equals(TechParamWatch)){
+                        printTechParam(chat_id, objectId);
+                    }
+                    printRepeatButton(chat_id);
+
+                }
+
+                if (callBackData.equals("root")) {
+                    u.setTgUserSate(chat_id,RootMenu);
+                    //this.printRootMenu(chat_id);
+                    this.showAbout(chat_id);
+
                 }
 
 
-                //String
-                System.err.println("!!!!!!!!!!!!!!! =  = " + u.getRtData().getObjectData(objectId));
-                //System.out.println(u.getRtData().getObjectGeoData(webbReq,objectId));
+
+                System.err.println("DATA = !!!!!!!!!!!!!!! =  = " + u.getRtData().getObjectData(objectId));
+
             }
+
         }
         catch (Exception e){
             System.out.println(e.getMessage());
             e.printStackTrace();
-            //printRootMenu(chat_id);
         }
 
-
-        //
-        //        if (callBackData.equals("")) {
-        //            //in this case = do nothing
-        //        } else if (callBackData.equals("123")){
-        //                printTgMessage(chat_id,"Оч. секретный раздел !");
-        //        }else {
-        //            //showHelp(chat_id);     //todo
-        //        }
     }
 
 
@@ -241,9 +289,9 @@ public class IPBot extends TelegramLongPollingBot {
      */
     private void showAbout(Long chatId){
         StringBuilder sb = new StringBuilder()
-                .append("List of KAMAZ robocars ").append("\n")
-                .append("? - description ").append("\n")
-                .append("* - do smth else ").append("\n");
+                .append("Список КАМАЗов с трекерами ").append("\n")
+                .append("/help или ? - описание ").append("\n")
+                .append("/start или * - начать просмотр ").append("\n");
 
         this.printTgMessage(chatId,sb.toString());
 
